@@ -22,3 +22,31 @@
 ## 1차 제작 Desktop UI
 
 ![image](https://user-images.githubusercontent.com/72294509/165088652-0fc3d933-a1e3-40a1-b2b8-8dc65df4bf3e.png)
+
+
+## 디렉토리 구조
+
+```
+│── src
+│   ├── components
+│   │     │── PostsPage.js 
+│   │     │── PostList.js
+│   │     │── Header.js
+│   │     │── PostsEditPage.js
+│   │     │── Editor.js
+│   │     │── Preview.js
+│   │     └── ToggleButton.js
+│   ├── storage
+│   │     └── constants.js
+│   ├── utils
+│   │     │── api.js
+│   │     │── fetch.js
+│   │     │── router.js
+│   │     └── storage.js
+│   ├── style.css
+│   ├── App.js
+│   └── main.js
+└── index.html
+```
+
+> 디렉토리 재 구성중..
