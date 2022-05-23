@@ -23,13 +23,12 @@
 
 ![image](https://user-images.githubusercontent.com/72294509/165088652-0fc3d933-a1e3-40a1-b2b8-8dc65df4bf3e.png)
 
-
 ## 디렉토리 구조
 
 ```
 │── src
 │   ├── components
-│   │     │── PostsPage.js 
+│   │     │── PostsPage.js
 │   │     │── PostList.js
 │   │     │── Header.js
 │   │     │── PostsEditPage.js
@@ -49,4 +48,4 @@
 └── index.html
 ```
 
-> 디렉토리 재 구성중..
+> 리팩토링 (2022-05-23 ~)
