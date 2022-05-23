@@ -27,10 +27,11 @@ export default function App({ $target }) {
     if (pathname === '/') {
       postsPage.setState();
     } else if (pathname.indexOf('/documents') === 0) {
-      const [, , id] = pathname.split('/');
+      const [, , _id] = pathname.split('/');
+      console.log(pathname);
 
       await postsPage.setState();
-      await postEditPage.setState({ id });
+      await postEditPage.setState({ _id });
     } else {
       $target.innerHTML = '<h1>404 NOT FOUND</h1>';
     }

@@ -54,11 +54,12 @@ export default function Preview({ $target, initialState }) {
   };
 
   this.render = () => {
-    const { title, content } = this.state;
+    const { data } = this.state;
+    if (!data) return;
 
     $preview.innerHTML = `
-	   <h1>${title}</h1><br><hr><br>
-	   ${renderRichContent(content)}
+	   <h1>${data.title}</h1><br><hr><br>
+	   ${renderRichContent(data.content)}
 	  `;
   };
 

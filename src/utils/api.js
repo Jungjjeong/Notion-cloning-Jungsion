@@ -1,21 +1,38 @@
-import { API } from '../storage/constants.js';
+import { request } from './common.js';
 
-export const request = async (url, options = {}) => {
-  try {
-    const res = await fetch(`${API.END_POINT}${url}`, {
-      ...options,
-      headers: {
-        'x-username': API.USER_NAME,
-        'Content-Type': 'application/json',
-      },
-    });
+export const fetchList = async () => {
+  const posts = await request('/documents', {
+    method: 'GET',
+  });
 
-    if (res.ok) {
-      return res.json();
-    }
+  return posts;
+};
 
-    throw new Error(`${res.status} Error`);
-  } catch (e) {
-    alert(e.message);
-  }
+export const createPost = async post => {
+  const newPost = await request('/documents', {
+    method: 'POST',
+    body: JSON.stringify(post),
+  });
+
+  return newPost;
+};
+
+export const deletePost = async _id => {
+  await request(`/documents/${_id}`, {
+    method: 'DELETE',
+  });
+};
+
+export const updatePost = async (_id, postBody) => {
+  await request(`/documents/${_id}`, {
+    method: 'PUT',
+    body: JSON.stringify(postBody),
+  });
+};
+
+export const fetchPost = async _id => {
+  console.log(_id);
+  const post = await request(`/documents/${_id}`);
+
+  return post;
 };

@@ -21,57 +21,60 @@ export default function Editor({
 
   this.setState = nextState => {
     if (nextState) {
+      console.log(nextState);
       this.state = nextState;
       this.render();
     }
   };
 
-  const renderDocuments = ({ documents }, arr) => {
-    if (documents.length !== 0) {
-      arr.push('<ul>');
-      for (let d of documents) {
-        const { title, id, documents } = d;
-        arr.push(
-          `<li data-id=${id}><span class=${CLASS.SUB_TITLE}>${title}</span></li>`,
-        );
-        renderDocuments({ documents }, arr);
-      }
-      arr.push('</ul>');
-    }
+  // const renderDocuments = ({ documents }, arr) => {
+  //   if (documents.length !== 0) {
+  //     arr.push('<ul>');
+  //     for (let d of documents) {
+  //       const { title, id, documents } = d;
+  //       console.log(d);
+  //       arr.push(
+  //         `<li data-id=${id}><span class=${CLASS.SUB_TITLE}>${title}</span></li>`,
+  //       );
+  //       renderDocuments({ documents }, arr);
+  //     }
+  //     arr.push('</ul>');
+  //   }
 
-    return arr;
-  };
+  //   return arr;
+  // };
 
   this.render = () => {
-    const { title, content, documents } = this.state;
-    const subLists = renderDocuments({ documents }, []).join('');
+    const { title, content, documents } = this.state.data;
+    console.log(title, content, documents);
+    // const subLists = renderDocuments({ documents }, []).join('');
 
     $editor.innerHTML = `
 	   <input class=${CLASS.EDIT_TITLE} type="text" value="${title}" placeholder ="Untitled"/>
 	   <textarea class=${CLASS.EDIT_CONTENT} placeholder ="Content">${content}</textarea> 
 	  `;
 
-    $subPostList.innerHTML = `
-    <button class=${CLASS.SUB_LIST_TOGGLE}>▼</button>
-    <span class=${CLASS.SUB_LIST_TITLE}>${TEXT.SUB_LIST_TITLE}</span>
-    <div class=${CLASS.SUB_LIST_DIV}>${
-      subLists === ''
-        ? `<p class=${CLASS.SUB_EMPTY}>${TEXT.SUB_EMPTY}</p>`
-        : subLists
-    }</div>
-    `;
+    // $subPostList.innerHTML = `
+    // <button class=${CLASS.SUB_LIST_TOGGLE}>▼</button>
+    // <span class=${CLASS.SUB_LIST_TITLE}>${TEXT.SUB_LIST_TITLE}</span>
+    // <div class=${CLASS.SUB_LIST_DIV}>${
+    //   subLists === ''
+    //     ? `<p class=${CLASS.SUB_EMPTY}>${TEXT.SUB_EMPTY}</p>`
+    //     : subLists
+    // }</div>
+    // `;
   };
 
-  $subPostList.addEventListener('click', e => {
-    if (e.target.className === CLASS.SUB_LIST_TOGGLE) {
-      const $subLists = document.querySelector(`.${CLASS.SUB_LIST_DIV}`);
-      $subLists.classList.toggle(CLASS.TOGGLE);
-    }
-    if (e.target.className === CLASS.SUB_TITLE) {
-      const $li = e.target.closest('li');
-      renderSubPost($li.dataset.id);
-    }
-  });
+  // $subPostList.addEventListener('click', e => {
+  //   if (e.target.className === CLASS.SUB_LIST_TOGGLE) {
+  //     const $subLists = document.querySelector(`.${CLASS.SUB_LIST_DIV}`);
+  //     $subLists.classList.toggle(CLASS.TOGGLE);
+  //   }
+  //   if (e.target.className === CLASS.SUB_TITLE) {
+  //     const $li = e.target.closest('li');
+  //     renderSubPost($li.dataset.id);
+  //   }
+  // });
 
   $editor.addEventListener('keyup', () => {
     const title = $editor.querySelector(`.${CLASS.EDIT_TITLE}`).value;
@@ -79,9 +82,13 @@ export default function Editor({
 
     const nextState = {
       ...this.state,
-      title: title,
-      content: content,
+      data: {
+        ...this.state.data,
+        title: title,
+        content: content,
+      },
     };
+    console.log(this.state);
 
     this.state = nextState;
     onEditing(this.state);

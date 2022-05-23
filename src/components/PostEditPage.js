@@ -1,7 +1,7 @@
 import Editor from './Editor.js';
 import Preview from './Preview.js';
 import ToggleButton from './ToggleButton.js';
-import { fetchPost, fetchUpdatePost } from '../utils/fetch.js';
+import { fetchPost, updatePost } from '../utils/api.js';
 import { getItem, setItem } from '../utils/storage.js';
 import { CLASS, ERROR, TEXT } from '../storage/constants.js';
 
@@ -30,8 +30,14 @@ export default function PostEditPage({ $target, initialState, listRendering }) {
         tempSaveData: new Date(),
       });
 
+      const { data } = post;
+      const postBody = {
+        content: data.content,
+        title: data.title,
+      };
+
       timer = setTimeout(async () => {
-        await fetchUpdatePost(post);
+        await updatePost(data._id, postBody);
         await listRendering();
       }, 1500);
     },
@@ -58,9 +64,8 @@ export default function PostEditPage({ $target, initialState, listRendering }) {
 
   this.setState = async nextState => {
     this.state = nextState;
-    POST_LOCAL_SAVE_KEY = `temp-post-${this.state.id}`;
+    POST_LOCAL_SAVE_KEY = `temp-post-${this.state._id}`;
 
-    await fetchUpdatePost(this.state);
     const post = await fetchLocalStorage();
 
     await listRendering();
@@ -71,19 +76,25 @@ export default function PostEditPage({ $target, initialState, listRendering }) {
   };
 
   const fetchLocalStorage = async () => {
-    const post = fetchPost(this.state.id);
+    const post = await fetchPost(this.state._id);
+    const { updatedAt } = post.data;
     const localPost = getItem(POST_LOCAL_SAVE_KEY, {
-      title: '',
-      content: '',
-      parent: null,
+      data: {
+        title: '',
+        content: '',
+        parent: null,
+      },
     });
 
-    if (localPost.tempSaveData && localPost.tempSaveData > post.updatedAt) {
+    if (localPost.tempSaveData && localPost.tempSaveData > updatedAt) {
       if (confirm(TEXT.STORAGE_CONFIRM)) {
         const updatedPost = {
           ...post,
-          title: localPost.title,
-          content: localPost.content,
+          data: {
+            ...post.data,
+            title: localPost.data.title,
+            content: localPost.data.content,
+          },
         };
 
         return updatedPost;

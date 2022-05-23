@@ -24,9 +24,9 @@ export default function PostList({
     }
   };
 
-  const renderDocuments = ({ title, id, documents }, arr) => {
+  const renderDocuments = ({ title, _id, documents }, arr) => {
     arr.push(
-      `<li data-id=${id}>
+      `<li data-id=${_id}>
       <span class=${CLASS.POST_TITLE}>▶ ${title}</span>
       <button class=${CLASS.SUB_POST_BTN}>+</button>
       <button class=${CLASS.REMOVE_BTN}>-</button>
@@ -36,8 +36,8 @@ export default function PostList({
       arr.push('<ul>');
 
       for (let d of documents) {
-        const { title, id, documents } = d;
-        renderDocuments({ title, id, documents }, arr);
+        const { title, _id, documents } = d;
+        renderDocuments({ title, _id, documents }, arr);
       }
       arr.push('</ul>');
     }
@@ -46,12 +46,14 @@ export default function PostList({
   };
 
   this.render = () => {
+    const { data } = this.state;
+
     $list.innerHTML = `
     <p class=${CLASS.LIST_TITLE}>${TEXT.LIST_TITLE}</p>
 	  <ul>
-	    ${this.state
-        .map(({ title, id, documents }) =>
-          renderDocuments({ title, id, documents }, []).join(''),
+	    ${data
+        .map(({ title, _id, documents }) =>
+          renderDocuments({ title, _id, documents }, []).join(''),
         )
         .join('')}  
 	  </ul>`;

@@ -1,6 +1,6 @@
 import PostList from './PostList.js';
 import Header from './Header.js';
-import { fetchList, fetchNewPost, fetchDeletePost } from '../utils/fetch.js';
+import { fetchList, createPost, deletePost } from '../utils/api.js';
 import { push } from '../utils/router.js';
 import { CLASS, TEXT } from '../storage/constants.js';
 
@@ -35,12 +35,13 @@ export default function PostsPage({ $target, initialState }) {
         title: 'Untitled',
         parent: parentId,
       };
-      const newPost = await fetchNewPost(post);
-      push(`/documents/${newPost.id}`);
+
+      const newPost = await createPost(post);
+      push(`/documents/${newPost.data._id}`);
     },
     onRemove: async id => {
       if (confirm(TEXT.REMOVE_CONFIRM)) {
-        await fetchDeletePost(id);
+        await deletePost(id);
         push('/');
       }
     },
@@ -57,11 +58,12 @@ export default function PostsPage({ $target, initialState }) {
   $button.addEventListener('click', async e => {
     if (e.target.className === CLASS.ROOT_POST_BTN) {
       const post = {
-        title: 'Untitled',
+        title: '',
         parent: null,
       };
-      const newPost = await fetchNewPost(post);
-      push(`/documents/${newPost.id}`);
+
+      const newPost = await createPost(post);
+      push(`/documents/${newPost.data._id}`);
     }
   });
 }
