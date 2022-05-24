@@ -5,7 +5,6 @@ export const ERROR = {
 export const API = {
   END_POINT:
     'http://jungsion-env.eba-8rgaa2ag.ap-northeast-2.elasticbeanstalk.com',
-  USER_NAME: 'Jiyoung',
 };
 
 export const ROUTE = {
